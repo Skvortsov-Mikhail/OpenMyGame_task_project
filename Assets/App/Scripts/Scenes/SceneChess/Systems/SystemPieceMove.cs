@@ -3,6 +3,7 @@ using App.Scripts.Scenes.SceneChess.Features.ChessField.Container;
 using App.Scripts.Scenes.SceneChess.Features.ChessSelection;
 using App.Scripts.Scenes.SceneChess.Features.GridNavigation;
 using App.Scripts.Scenes.SceneChess.Features.GridNavigation.Navigator;
+using System.Linq;
 
 namespace App.Scripts.Scenes.SceneChess.Systems
 {
@@ -31,7 +32,8 @@ namespace App.Scripts.Scenes.SceneChess.Systems
         {
             if (!_containerPieceMoves.HasMoves()) return;
 
-            foreach (var move in _containerPieceMoves.Moves) ProcessMove(move);
+            // Добавил метод ToList(), чтобы вносить изменения в коллекцию во время цикла
+            foreach (var move in _containerPieceMoves.Moves.ToList()) ProcessMove(move);
         }
 
         public void Cleanup()
@@ -43,7 +45,13 @@ namespace App.Scripts.Scenes.SceneChess.Systems
             var grid = _containerChessLevel.Grid;
             var piece = grid.Get(move.From);
             var pathCells = _chessGridNavigator.FindPath(piece.PieceModel.PieceType, move.From, move.To, grid);
-            if (pathCells is null) return;
+            if (pathCells is null)
+            {
+                // Добавил очистку коллекции ходов и снятие выделения
+                _containerPieceMoves.Clear();
+                ClearSelection();
+                return;
+            } 
 
             move.Path = pathCells;
             move.ChessUnit = piece;
