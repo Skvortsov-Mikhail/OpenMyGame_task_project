@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.IO;
 using App.Scripts.Scenes.SceneWordSearch.Features.Level.Models.Level;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace App.Scripts.Scenes.SceneWordSearch.Features.Level.BuilderLevelModel.ProviderWordLevel
 {
@@ -16,7 +16,7 @@ namespace App.Scripts.Scenes.SceneWordSearch.Features.Level.BuilderLevelModel.Pr
         {
             LevelInfo info = new LevelInfo();
 
-            string fileData = File.ReadAllText($"Assets/App/Resources/WordSearch/Levels/{levelIndex}.json");
+            string fileData = Resources.Load<TextAsset>($"WordSearch/Levels/{levelIndex}").text;
 
             info.words = JsonConvert.DeserializeObject<JSONData>(fileData).words;
 

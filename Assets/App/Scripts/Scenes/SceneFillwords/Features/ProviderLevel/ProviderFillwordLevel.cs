@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using App.Scripts.Scenes.SceneFillwords.Features.FillwordModels;
@@ -9,8 +8,8 @@ namespace App.Scripts.Scenes.SceneFillwords.Features.ProviderLevel
 {
     public class ProviderFillwordLevel : IProviderFillwordLevel
     {
-        private readonly string[] vocabulary = File.ReadAllLines("Assets/App/Resources/Fillwords/words_list.txt");
-        private readonly List<String> levelsData = File.ReadAllLines("Assets/App/Resources/Fillwords/pack_0.txt").ToList();
+        private readonly string[] vocabulary = Resources.Load<TextAsset>("Fillwords/words_list").text.Split("\r\n");
+        private readonly List<string> levelsData = Resources.Load<TextAsset>("Fillwords/pack_0").text.Split("\r\n").ToList();
 
         public GridFillWords LoadModel(int index)
         {
